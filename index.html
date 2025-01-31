@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<head>
+    <title>To-Do List</title>
+    <style>
+        body, h2, ol {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Center content and give some space */
+        body {
+            background-color: grey;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+        }
+
+        h2 {
+            color: dark grey;
+            margin-bottom: 20px;
+        }
+
+        /* Designing the task button */
+        #task-input {
+            padding: 10px;
+            font-size: 16px;
+            width: 250px;
+            border: 2px solid blue;
+            border-radius: 5px;
+            margin-right: 10px;
+        }
+
+	/* Designing the add task button */
+        #add-task {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        /* Task list styling */
+        #task-list {
+            margin-top: 16px;
+            list-style-type: decimal;
+            width: 100%;
+            max-width: 400px;
+        }
+
+        #task-list li {
+            background-color: white;
+            padding: 15px;
+            border: 1px solid yellow;
+            border-radius: 5px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+
+        #task-list li button {
+            background-color: red;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+
+        /* Error message styling */
+        .error-message {
+            color: white;
+            background-color: red;
+            padding: 10px;
+            border-radius: 5px;
+            font-weight: bold;
+            width: fit-content;
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>My To-Do List</h1>
+    <p>Type in your task and click add task after u add the task.</p>
+
+    <div>
+        <input type="text" id="task-input" placeholder="Enter a task">
+        <button id="add-task">Add Task</button>
+    </div>
+
+    <ol id="task-list"></ol>
+
+    <!-- Error message -->
+    <div class="error-message" id="error-message">
+        Error: Please enter a task!
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const taskInput = document.getElementById("task-input");
+            const addTaskButton = document.getElementById("add-task");
+            const taskList = document.getElementById("task-list");
+            const errorMessage = document.getElementById("error-message");
+
+            function addTask() {
+                const taskText = taskInput.value.trim();
+                if (taskText === "") {
+                    // Show error message
+                    errorMessage.style.display = "block";
+
+                    // Hide error message after 2 seconds
+                    setTimeout(() => {
+                        errorMessage.style.display = "none";
+                    }, 2000);
+                    return;
+                }
+
+                const taskItem = document.createElement("li");
+                taskItem.textContent = taskText;
+
+                const removeButton = document.createElement("button");
+                removeButton.textContent = "X";
+                removeButton.onclick = function () {
+                    taskItem.remove();
+                };
+
+                taskItem.appendChild(removeButton);
+                taskList.appendChild(taskItem);
+
+                taskInput.value = "";
+            }
+
+            addTaskButton.addEventListener("click", addTask);
+
+            taskInput.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    addTask();
+                }
+            });
+        });
+    </script>
+</body>
+</html>
